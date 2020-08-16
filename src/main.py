@@ -1,6 +1,62 @@
 from selenium import webdriver
 import time
 from config import EMAIL, PASSWORD
+import pandas as pd
+
+dataframe = pd.read_excel('data.xlsx')
 
 browser = webdriver.Chrome(
     executable_path='/Users/akjasim/chromedriver/chromedriver')
+
+browser.maximize_window()
+
+browser.get('https://www.gmail.com')
+
+
+email_input = browser.find_element_by_css_selector('input[type="email"]')
+email_input.send_keys(EMAIL)
+
+next_btn = browser.find_element_by_class_name(
+    'VfPpkd-LgbsSe')
+next_btn.click()
+
+time.sleep(2)
+
+password_input = browser.find_element_by_name('password')
+password_input.send_keys(PASSWORD)
+
+next_btn = browser.find_element_by_class_name(
+    'VfPpkd-LgbsSe')
+next_btn.click()
+
+for index, i in enumerate(dataframe.index):
+    # print(dataframe.loc[i], end='\n\n')
+    # print(index)
+
+    time.sleep(3)
+
+    compose_btn = browser.find_element_by_css_selector('.T-I.T-I-KE.L3')
+    compose_btn.click()
+
+    time.sleep(2)
+
+    to_field = browser.find_element_by_name('to')
+    to_field.send_keys(dataframe.loc[i]['Email'])
+
+    subject_field = browser.find_element_by_name('subjectbox')
+    subject_field.send_keys(f"Hello {dataframe.loc[i]['Name']}")
+
+    body_field = browser.find_element_by_css_selector(
+        '.Am.Al.editable.LW-avf.tS-tW')
+    body_content = f"""Hello {dataframe.loc[i]['Name']},
+Hiiiiaf,
+dasfsf
+fadsf
+    """
+    body_field.send_keys(body_content)
+
+    send_btn = browser.find_element_by_css_selector(
+        '.T-I.J-J5-Ji.aoO.v7.T-I-atl.L3')
+    send_btn.click()
+
+    time.sleep(5)
