@@ -5,6 +5,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import pyperclip
 import time
+import sys
+
+try:
+    if sys.argv[1]:
+        with open(sys.argv[1], 'r', encoding='utf8') as f:
+            groups = [group.strip() for group in f.readlines()]
+except IndexError:
+    print('Please provide the group name as the first argument.')
+
+with open('msg.txt', 'r', encoding='utf8') as f:
+    msg = f.read()
 
 browser = webdriver.Chrome(
     executable_path='/Users/akjasim/chromedriver/chromedriver')
@@ -12,12 +23,6 @@ browser = webdriver.Chrome(
 browser.maximize_window()
 
 browser.get('https://web.whatsapp.com/')
-
-with open('groups.txt', 'r', encoding='utf8') as f:
-    groups = [group.strip() for group in f.readlines()]
-
-with open('msg.txt', 'r', encoding='utf8') as f:
-    msg = f.read()
 
 for group in groups:
     search_xpath = '//div[@contenteditable="true"][@data-tab="3"]'
@@ -50,4 +55,23 @@ for group in groups:
     input_box.send_keys(Keys.SHIFT, Keys.INSERT)  # Keys.CONTROL + "v"
     input_box.send_keys(Keys.ENTER)
 
-    time.sleep(2)
+    time.sleep(1)
+
+    try:
+        if sys.argv[2]:
+            attachment_box = browser.find_element_by_xpath(
+                '//div[@title="Attach"]')
+            attachment_box.click()
+            time.sleep(1)
+
+            image_box = browser.find_element_by_xpath(
+                '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+            image_box.send_keys(sys.argv[2])
+            time.sleep(2)
+
+            send_btn = browser.find_element_by_xpath(
+                '//span[@data-icon="send"]')
+            send_btn.click()
+            time.sleep(2)
+    except IndexError:
+        pass
