@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 import pyperclip
 import time
 import sys
+from config import CHROME_PROFILE_PATH
 
 try:
     if sys.argv[1]:
@@ -17,8 +18,11 @@ except IndexError:
 with open('msg.txt', 'r', encoding='utf8') as f:
     msg = f.read()
 
+options = webdriver.ChromeOptions()
+options.add_argument(CHROME_PROFILE_PATH)
+
 browser = webdriver.Chrome(
-    executable_path='/Users/akjasim/chromedriver/chromedriver')
+    executable_path='/Users/akjasim/chromedriver/chromedriver', options=options)
 
 browser.maximize_window()
 
