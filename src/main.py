@@ -7,7 +7,7 @@ import pandas as pd
 browser = webdriver.Chrome(
     executable_path='/Users/akjasim/chromedriver/chromedriver')
 
-browser.get('http://localhost:3000/')
+browser.get('https://selenium.jasim.tech/')
 
 dataframe = pd.read_excel('data.xlsx')
 
@@ -36,9 +36,11 @@ for i in dataframe.index:
     status_select.select_by_value(entry['Working Status'])
 
     print('Sleeping for 5 seconds before submitting...')
-    time.sleep(5)
+    time.sleep(3)
 
     # email_input.submit()
 
     submit_btn = browser.find_element_by_css_selector('input[type="submit"]')
     browser.execute_script("return arguments[0].click()", submit_btn)
+
+    time.sleep(2)
